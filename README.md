@@ -16,6 +16,11 @@ A Python tool that converts images into ASCII art text.
 ## Installation
 
 ```bash
+# Create and activate a Python virtual environment
+python -m venv venv
+source venv/bin/activate  # On macOS/Linux
+# venv\Scripts\activate   # On Windows
+
 pip install -r requirements.txt
 ```
 
