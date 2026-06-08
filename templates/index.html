@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Art Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ASCII Art Generator</h1>
+            <p class="subtitle">Upload an image and convert it to text art</p>
+        </header>
+
+        <main class="app">
+            <!-- Left Panel: Upload & Controls -->
+            <section class="panel controls-panel">
+                <div class="upload-area" id="dropZone">
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                    <div class="upload-prompt">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <p>Drop image here or click to browse</p>
+                        <span class="upload-hint">Supports JPG, PNG, GIF, WebP</span>
+                    </div>
+                    <img id="imagePreview" class="image-preview" alt="Preview" hidden>
+                </div>
+
+                <div class="options">
+                    <div class="option-row">
+                        <label for="width">Width (chars)</label>
+                        <div class="range-group">
+                            <input type="range" id="widthSlider" min="20" max="300" value="100">
+                            <input type="number" id="widthInput" min="20" max="500" value="100">
+                        </div>
+                    </div>
+
+                    <div class="option-row">
+                        <label for="charset">Character Set</label>
+                        <select id="charset">
+                            {% for name in char_sets %}
+                            <option value="{{ name }}" {% if name == 'standard' %}selected{% endif %}>{{ name|title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="option-row">
+                        <label for="contrast">Contrast</label>
+                        <div class="range-group">
+                            <input type="range" id="contrastSlider" min="0.5" max="3.0" step="0.1" value="1.0">
+                            <input type="number" id="contrastInput" min="0.5" max="3.0" step="0.1" value="1.0">
+                        </div>
+                    </div>
+
+                    <div class="option-row">
+                        <label for="brightness">Brightness</label>
+                        <div class="range-group">
+                            <input type="range" id="brightnessSlider" min="0.5" max="2.0" step="0.1" value="1.0">
+                            <input type="number" id="brightnessInput" min="0.5" max="2.0" step="0.1" value="1.0">
+                        </div>
+                    </div>
+
+                    <div class="option-row toggles">
+                        <label class="toggle">
+                            <input type="checkbox" id="invert">
+                            <span class="toggle-label">Invert</span>
+                        </label>
+                        <label class="toggle">
+                            <input type="checkbox" id="autoScale" checked>
+                            <span class="toggle-label">Auto Scale</span>
+                        </label>
+                    </div>
+
+                    <button id="convertBtn" class="btn btn-primary" disabled>
+                        <span class="btn-text">Generate ASCII Art</span>
+                        <span class="spinner" hidden></span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Right Panel: Output -->
+            <section class="panel output-panel">
+                <div class="output-toolbar">
+                    <h2>Output</h2>
+                    <div class="toolbar-actions">
+                        <button id="copyBtn" class="btn btn-small" disabled>Copy</button>
+                        <button id="downloadBtn" class="btn btn-small" disabled>Download</button>
+                    </div>
+                </div>
+                <div class="output-container" id="outputContainer">
+                    <div class="output-placeholder" id="outputPlaceholder">
+                        <p>ASCII art will appear here</p>
+                    </div>
+                    <pre id="asciiOutput" class="ascii-output" hidden></pre>
+                </div>
+                <div class="output-meta" id="outputMeta" hidden>
+                    <span id="dimDisplay"></span>
+                    <span id="charSetDisplay"></span>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>ASCII Art Generator &middot; Built with Python + Flask</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
